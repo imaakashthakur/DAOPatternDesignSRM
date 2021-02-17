@@ -14,4 +14,6 @@ import com.f1softmanjitshakyatraining.day18.model.Course;
 public interface CourseService {
 
     Course getCourseById(int courseId);
+
+    void insertCourse(String courseName);
 }

@@ -26,4 +26,8 @@ public class Course {
     private int courseId;
     private String courseName;
 
+    public Course(int courseId) {
+        this.courseId = courseId;
+    }
+
 }

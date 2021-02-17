@@ -23,5 +23,9 @@ public interface StudentDAO {
     void renovateStudentById(int id, String name, String address, String contact, int courseId);
 
     void addStudent(String name, String address, String contact, int courseId);
+    
+    Boolean saveStudent(Student student);
+    
+    
 
 }

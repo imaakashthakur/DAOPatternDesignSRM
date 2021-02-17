@@ -26,4 +26,9 @@ public class CourseServiceImpl implements CourseService {
         return courseDAO.fetchCourseById(courseId);
     }
 
+    @Override
+    public void insertCourse(String courseName) {
+        courseDAO.saveCourse(courseName);
+    }
+
 }

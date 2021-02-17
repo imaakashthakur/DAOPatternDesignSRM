@@ -6,6 +6,8 @@
 package com.f1softmanjitshakyatraining.day18.service.impl;
 
 import com.f1softmanjitshakyatraining.day18.model.Student;
+import com.f1softmanjitshakyatraining.day18.model.Course;
+import com.f1softmanjitshakyatraining.day18.dto.StudentDTO;
 import com.f1softmanjitshakyatraining.day18.service.StudentService;
 import com.f1softmanjitshakyatraining.day18.dao.StudentDAO;
 import java.util.List;
@@ -45,5 +47,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void insertStudent(String name, String address, String contact, int courseId) {
         studentDAO.addStudent(name, address, contact, courseId);
+    }
+
+    @Override
+    public void addStudent(StudentDTO studentDTO) {
+        Student student = new Student();
+
+        student.setName(studentDTO.getName());
+        student.setAddress(studentDTO.getAddress());
+        student.setContactNo(studentDTO.getContactNo());
+        student.setCourse(new Course(studentDTO.getCourseId()));
+        
+        studentDAO.saveStudent(student);
+
     }
 }

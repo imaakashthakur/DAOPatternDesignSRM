@@ -13,4 +13,5 @@ import com.f1softmanjitshakyatraining.day18.model.Course;
  */
 public interface CourseDAO {
     Course fetchCourseById(int courseId);
+    void saveCourse(String courseName);
 }

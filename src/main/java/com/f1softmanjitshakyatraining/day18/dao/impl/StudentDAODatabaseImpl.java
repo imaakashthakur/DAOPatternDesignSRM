@@ -8,8 +8,8 @@ package com.f1softmanjitshakyatraining.day18.dao.impl;
 import com.f1softmanjitshakyatraining.day18.model.Student;
 import com.f1softmanjitshakyatraining.day18.model.Course;
 import com.f1softmanjitshakyatraining.day18.dao.StudentDAO;
+import com.f1softmanjitshakyatraining.day18.jdbc.JDBCConnection;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,18 +25,13 @@ import java.util.logging.Logger;
  */
 public class StudentDAODatabaseImpl implements StudentDAO {
 
-    Connection con = null;
+//    Connection con = null;
+    static Connection con = JDBCConnection.getConnection();
 
     @Override
     public List<Student> fetchAllStudents() {
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/SRM";
-            String username = "root";
-            String password = "idrunkh2o";
-            con = DriverManager.getConnection(url, username, password);
-
             System.out.println("\nMySQL Database connection established!!");
 
             Statement stmt = con.createStatement();
@@ -66,7 +61,7 @@ public class StudentDAODatabaseImpl implements StudentDAO {
             System.out.println("Result Set: " + students);
             con.close();
 
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("Exception Occured: " + ex.getMessage());
         }
         return null;
@@ -76,13 +71,6 @@ public class StudentDAODatabaseImpl implements StudentDAO {
     public Student fetchStudentById(int id) {
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/SRM";
-            String username = "root";
-            String password = "idrunkh2o";
-            con = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection is established successfully!");
-
             PreparedStatement pstmt;
 
             ResultSet rs;
@@ -115,7 +103,7 @@ public class StudentDAODatabaseImpl implements StudentDAO {
             System.out.println("Record where ID = 1: " + students);
             con.close();
 
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(StudentDAODatabaseImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -125,13 +113,6 @@ public class StudentDAODatabaseImpl implements StudentDAO {
     public void removeStudentById(int id) {
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/SRM";
-            String username = "root";
-            String password = "idrunkh2o";
-            con = DriverManager.getConnection(url, username, password);
-            System.out.println("MySQL database conneciton established!");
-
             PreparedStatement pstmt;
 
             String query = "DELETE FROM Students WHERE id = ?";
@@ -140,7 +121,7 @@ public class StudentDAODatabaseImpl implements StudentDAO {
             int rowDeleted = pstmt.executeUpdate();
             System.out.println("\nThe row is deleted successfully!!!: " + rowDeleted);
             con.close();
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("Exception Catched: " + ex);
         }
     }
@@ -148,12 +129,6 @@ public class StudentDAODatabaseImpl implements StudentDAO {
     @Override
     public void renovateStudentById(int id, String name, String address, String contact, int courseId) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/SRM";
-            String username = "root";
-            String password = "idrunkh2o";
-            con = DriverManager.getConnection(url, username, password);
-
             PreparedStatement pstmt;
 
             String query = "UPDATE Students SET Name = ?, Address =?, Contact = ?, CourseId = ? WHERE id = ?";
@@ -166,7 +141,7 @@ public class StudentDAODatabaseImpl implements StudentDAO {
             int rowUpdated = pstmt.executeUpdate();
             System.out.println("Row " + id + " is updated: " + rowUpdated);
             con.close();
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("Exception Catched: " + ex);
         }
     }
@@ -174,13 +149,7 @@ public class StudentDAODatabaseImpl implements StudentDAO {
     @Override
     public void addStudent(String name, String address, String contact, int courseId) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/SRM";
-            String username = "root";
-            String password = "idrunkh2o";
-
-            con = DriverManager.getConnection(url, username, password);
-
+        
             PreparedStatement pstmt;
 
             String query = "INSERT INTO Students(Name, Address, Contact, CourseId) VALUES(?, ?, ?, ?)";
@@ -193,9 +162,33 @@ public class StudentDAODatabaseImpl implements StudentDAO {
             int rowCreated = pstmt.executeUpdate();
             System.out.println("Row is created! " + rowCreated);
             con.close();
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("Exception Caught: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public Boolean saveStudent(Student student) {
+
+        try {
+            
+            PreparedStatement pstmt;
+
+            String query = "INSERT INTO Students(Name, Address, Contact, CourseId) VALUES(?, ?, ?, ?)";
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, student.getName());
+            pstmt.setString(2, student.getAddress());
+            pstmt.setString(3, student.getContactNo());
+            pstmt.setInt(4, student.getCourse().getCourseId());
+
+            boolean result = pstmt.execute();
+            System.out.println("Connection is closed!!: " + result);
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("Exception Caught: " + ex.getMessage());
+        }
+
+        return false;
     }
 
 }
