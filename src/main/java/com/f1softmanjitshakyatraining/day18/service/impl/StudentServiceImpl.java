@@ -52,12 +52,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void addStudent(StudentDTO studentDTO) {
         Student student = new Student();
-
         student.setName(studentDTO.getName());
         student.setAddress(studentDTO.getAddress());
         student.setContactNo(studentDTO.getContactNo());
         student.setCourse(new Course(studentDTO.getCourseId()));
-        
+
         studentDAO.saveStudent(student);
 
     }

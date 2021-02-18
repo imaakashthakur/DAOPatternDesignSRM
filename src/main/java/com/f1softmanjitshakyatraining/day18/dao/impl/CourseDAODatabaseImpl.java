@@ -8,10 +8,10 @@ package com.f1softmanjitshakyatraining.day18.dao.impl;
 import com.f1softmanjitshakyatraining.day18.model.Course;
 import com.f1softmanjitshakyatraining.day18.dao.CourseDAO;
 import com.f1softmanjitshakyatraining.day18.jdbc.JDBCConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,7 +52,31 @@ public class CourseDAODatabaseImpl implements CourseDAO {
         return null;
 
     }
+    @Override
+    public List<Course> fetchAllCourses() {
+        List<Course> coursesList = new ArrayList<>();
 
+        try {
+            Statement stmt;
+            String query = "SELECT * FROM Courses";
+
+            ResultSet rs;
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                Course course = new Course();
+                String courseName = rs.getString("Name");
+                int courseId = rs.getInt("CourseId");
+                course.setCourseId(courseId);
+                course.setCourseName(courseName);
+                coursesList.add(course);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Exception is caught: " + ex);
+        }
+        return coursesList;
+    }
     @Override
     public void saveCourse(String courseName) {
         try {

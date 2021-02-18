@@ -9,6 +9,8 @@ import com.f1softmanjitshakyatraining.day18.dao.CourseDAO;
 import com.f1softmanjitshakyatraining.day18.model.Course;
 import com.f1softmanjitshakyatraining.day18.service.CourseService;
 
+import java.util.List;
+
 /**
  *
  * @author aakashthakur-work
@@ -29,6 +31,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void insertCourse(String courseName) {
         courseDAO.saveCourse(courseName);
+    }
+
+    @Override
+    public List<Course> getAllCourses() {
+        return courseDAO.fetchAllCourses();
     }
 
 }

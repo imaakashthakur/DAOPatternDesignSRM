@@ -7,6 +7,8 @@ package com.f1softmanjitshakyatraining.day18.dao;
 
 import com.f1softmanjitshakyatraining.day18.model.Course;
 
+import java.util.List;
+
 /**
  *
  * @author aakashthakur-work
@@ -14,4 +16,5 @@ import com.f1softmanjitshakyatraining.day18.model.Course;
 public interface CourseDAO {
     Course fetchCourseById(int courseId);
     void saveCourse(String courseName);
+    List<Course> fetchAllCourses();
 }
